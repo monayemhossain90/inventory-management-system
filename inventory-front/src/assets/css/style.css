@@ -61,8 +61,7 @@ td div {
 
 .passwordField{
   position: relative;
-  height: 55px;
-
+ 
 }
 
 .passwordField .passwordInput{
@@ -81,7 +80,7 @@ td div {
 #showIcon{
   position: absolute;
   right: 15px;
-  top: 50%;
+  top: 60%;
   transform: translateY(-50%);
   font-size: 19px;
   color: #48DBFB;
@@ -94,7 +93,7 @@ td div {
 #hideIcon{
   position: absolute;
   right: 15px;
-  top: 50%;
+  top: 60%;
   transform: translateY(-50%);
   font-size: 19px;
   color: #48DBFB;

@@ -262,8 +262,11 @@ const MasterLayout = (props) => {
           <Container fluid={true}>
 
             <Navbar.Brand>
+              
               <div ref={(div) => {topNavRef = div}} className="top-nav-open">
-                <h4 className="text-white m-0 p-0"><a onClick={MenuBarClickHandler}><AiOutlineMenu /></a></h4>
+                
+                <h4 className="text-white m-0 p-0"><a onClick={MenuBarClickHandler}><AiOutlineMenu /></a>  Inventory Management System </h4>
+               
               </div>
             </Navbar.Brand>
 
