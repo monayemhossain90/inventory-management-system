@@ -1,6 +1,6 @@
 import store from "../redux/store/store";
 import {BaseURL} from "../helper/config";
-import axios from "axios";
+import axios from "../helper/axiosClient";
 import {getToken} from "../helper/SessionHelper";
 import {HideLoader, ShowLoader} from "../redux/state-slice/settingsSlice";
 import {ErrorToast} from "../helper/ValidationHelper";

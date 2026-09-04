@@ -7,6 +7,7 @@ const DataSchema=mongoose.Schema(
        ProductName:{type:String},
        Unit:{type:String},
        Details:{type:String},
+       Stock:{type:Number, default:0},
     },
     { timestamps: true, versionKey:false}
 );

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../helper/axiosClient";
 import store from "../redux/store/store";
 import {HideLoader, ShowLoader} from "../redux/state-slice/settingsSlice";
 import {getToken, setEmail, setOTP, setToken, setUserDetails} from "../helper/SessionHelper";
@@ -384,8 +384,9 @@ export async function ChangePasswordRequest(CurrentPassword, NewPassword,Process
         ProcessingBtnRef.classList.add('btnCapitalize');
         ProcessingBtnRef.innerHTML= "<span class=\"spinner-border spinner-border-sm me-1\" role=\"status\" aria-hidden=\"true\"></span>\n" +
             "  Processing...";
-        let URL=BaseURL+"/ChangePassword/"+CurrentPassword+"/"+NewPassword;
-        let res=await axios.get(URL,AxiosHeader);
+        let URL=BaseURL+"/ChangePassword";
+        let PostBody={currentPassword:CurrentPassword,newPassword:NewPassword};
+        let res=await axios.post(URL,PostBody,AxiosHeader);
         store.dispatch(HideLoader())
         ProcessingBtnRef.classList.remove('btnCapitalize');
         ProcessingBtnRef.innerHTML="Change Password";

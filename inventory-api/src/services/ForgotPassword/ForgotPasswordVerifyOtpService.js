@@ -1,3 +1,5 @@
+const IsOTPExpired = require("../../utility/OTPExpiryUtility");
+
 const ForgotPasswordVerifyOtpService= async (Request, DataModel) => {
     try {
         let email = Request.params.email;
@@ -7,13 +9,17 @@ const ForgotPasswordVerifyOtpService= async (Request, DataModel) => {
 
 
         //Database First Process
-        let OTPCount = await DataModel.aggregate([{$match: {email: email, otp: OTPCode, status: status}}, {$count: "total"}])
+        let OTPRecord = await DataModel.findOne({email: email, otp: OTPCode, status: status})
 
-        if (OTPCount.length>0) {
+        if (OTPRecord && !IsOTPExpired(OTPRecord)) {
 
             // Second Process
             let OTPUpdate = await DataModel.updateOne({email: email, otp: OTPCode, status: status}, {email: email, otp: OTPCode, status: statusUpdate})
             return {status: "success", data: OTPUpdate}
+
+        } else if (OTPRecord) {
+
+            return {status: "fail", data: "OTPExpired"}
 
         } else {
 

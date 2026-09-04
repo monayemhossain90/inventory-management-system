@@ -3,9 +3,13 @@ const ChildsModel = require("../../models/Sales/SaleProductsModel");
 const CreateParentChildsService = require("../../services/common/CreateParentChildsService");
 const ListOneJoinService = require("../../services/common/ListOneJoinService");
 const DeleteParentChildsService = require("../../services/common/DeleteParentChildsService");
+const ProductsModel = require("../../models/Products/ProductsModel");
+
+// Sales remove stock from a product
+const StockConfig = {ProductModel: ProductsModel, direction: -1};
 
 exports.CreateSales=async (req, res) => {
-    let Result= await CreateParentChildsService(req,ParentModel,ChildsModel,'SaleID');
+    let Result= await CreateParentChildsService(req,ParentModel,ChildsModel,'SaleID',StockConfig);
     res.status(200).json(Result)
 }
 
@@ -21,6 +25,6 @@ exports.SalesList=async (req, res) => {
 
 
 exports.SaleDelete=async (req, res) => {
-    let Result=await DeleteParentChildsService(req,ParentModel,ChildsModel,'SaleID')
+    let Result=await DeleteParentChildsService(req,ParentModel,ChildsModel,'SaleID',StockConfig)
     res.status(200).json(Result)
 }

@@ -26,7 +26,7 @@ exports.ProductsList=async (req, res) => {
     let SearchRgx = {"$regex": req.params.searchKeyword, "$options": "i"}
     let JoinStage1={$lookup: {from: "brands", localField: "BrandID", foreignField: "_id", as: "Brands"}};
     let JoinStage2= {$lookup: {from: "categories", localField: "CategoryID", foreignField: "_id", as: "Categories"}};
-   let Projection = {$project:{_id:1, UserEmail:1, ProductName:1, Unit:1, CategoryID:1, BrandID:1, Details:1, createdAt:1, updatedAt:1, BrandName:{$first:"$Brands.BrandName"}, CategoryName:{$first:"$Categories.CategoryName"}}}
+   let Projection = {$project:{_id:1, UserEmail:1, ProductName:1, Unit:1, CategoryID:1, BrandID:1, Details:1, Stock:1, createdAt:1, updatedAt:1, BrandName:{$first:"$Brands.BrandName"}, CategoryName:{$first:"$Categories.CategoryName"}}}
 
     let SearchArray=[{ProductName: SearchRgx},{Unit: SearchRgx},{Details: SearchRgx},{BrandName:SearchRgx},{CategoryName:SearchRgx}]
     let Result=await ListTwoJoinService(req,DataModel,SearchArray,JoinStage1,JoinStage2,Projection);

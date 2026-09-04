@@ -21,6 +21,7 @@ const cors = require('cors');
 
 //Database Library Import
 const mongoose = require('mongoose');
+const dbConnect = require('./src/utility/dbConnect');
 
 
 //Security Middleware Implementation
@@ -30,7 +31,6 @@ app.use(helmet())
 app.use(mongoSanitize())
 app.use(xss())
 app.use(hpp())
-app.use(cors())
 
 
 //RequestBodySizeIncrease//Body Parser Implementation
@@ -43,7 +43,7 @@ app.use(bodyParser.urlencoded({limit: '30mb', extended: true}));
 
 const Limiter = rateLimit({
       windowMs: 15 * 60 * 1000,   //15 Minutes
-      max: 300000000   //Limit each IP to 100 requests per windowMs
+      max: 300   //Limit each IP to 300 requests per windowMs
 })
 app.use(Limiter);
 
@@ -51,18 +51,7 @@ app.use(Limiter);
 
 //MongoDB(mongoose) Atlas Database Connection
 mongoose.set('strictQuery', false);
-
-let uri = process.env.MONGO_URI;
-
-
-
-mongoose.connect(uri, (error)=>{
-      if (error) {
-            console.error("db Connection Error:", error);
-      } else {
-            console.log("DB Connection Success");
-      }
-});
+dbConnect();
 
 
 

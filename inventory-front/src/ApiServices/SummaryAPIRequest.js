@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../helper/axiosClient";
 import store from "../redux/store/store";
 import {getToken} from "../helper/SessionHelper";
 import {BaseURL} from "../helper/config";

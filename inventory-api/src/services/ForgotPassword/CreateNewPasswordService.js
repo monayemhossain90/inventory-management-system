@@ -1,5 +1,5 @@
-const OTPSModel = require("../../models/Users/OTPSModel");
-const UsersModel = require("../../models/Users/UsersModel");
+const {HashPassword} = require("../../utility/PasswordUtility");
+const IsOTPExpired = require("../../utility/OTPExpiryUtility");
 
 const CreateNewPasswordService= async (Request,UsersModel,OTPSModel) => {
     let email = Request.body['email'];
@@ -9,12 +9,16 @@ const CreateNewPasswordService= async (Request,UsersModel,OTPSModel) => {
 
     try {
         // Database First Process
-          let OTPUsedCount = await OTPSModel.aggregate([{$match: {email: email, otp: OTPCode, status: statusUpdate}}]);
+          let OTPRecord = await OTPSModel.findOne({email: email, otp: OTPCode, status: statusUpdate});
 
-          if(OTPUsedCount.length > 0){
+          if(OTPRecord && !IsOTPExpired(OTPRecord)){
+            let HashedPassword = await HashPassword(NewPass);
             // Database Second Process
-            let PasswordUpdate = await UsersModel.updateOne({email: email},{password: NewPass})
+            let PasswordUpdate = await UsersModel.updateOne({email: email},{password: HashedPassword})
             return {status: "success", data: PasswordUpdate}
+          }
+          else if(OTPRecord){
+            return {status: "fail", data: "OTPExpired"}
           }
           else{
             return {status: "fail", data: "InvalidOtpCode"}
@@ -22,8 +26,8 @@ const CreateNewPasswordService= async (Request,UsersModel,OTPSModel) => {
     }
 
 
-    catch (e) {
-        return {status: "fail", data: error}
+    catch (error) {
+        return {status: "fail", data: error.toString()}
     }
 }
 module.exports=CreateNewPasswordService
